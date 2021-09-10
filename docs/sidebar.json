@@ -1,0 +1,11 @@
+{
+  "generative_models": {
+    "Overview": "/",
+    "Layers": "layers.html",
+    "Training": "training.html",
+    "MADE model": "made.html",
+    "PixelCNN model": "pixelcnn.html",
+    "Variational Autoencoder": "vae.html",
+    "Title": "experiments.pixelcnn.html"
+  }
+}
