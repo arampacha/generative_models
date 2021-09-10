@@ -31,7 +31,9 @@ index = {"identity": "00_layers.ipynb",
          "VAE": "04_vae.ipynb",
          "VQPseudoGrad": "04_vae.ipynb",
          "VectorQuantizer": "04_vae.ipynb",
-         "VectorQuantizerEMA": "04_vae.ipynb"}
+         "EMA": "04_vae.ipynb",
+         "VectorQuantizerEMA": "04_vae.ipynb",
+         "VQVAE": "04_vae.ipynb"}
 
 modules = ["layers.py",
            "training.py",
