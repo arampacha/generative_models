@@ -91,7 +91,7 @@ class VectorQuantizer(nn.Module):
         q_latent_loss = F.mse_loss(zq, z.detach())
         loss = q_latent_loss + e_latent_loss * self.commitment_cost
 
-        avg_probs = F.one_hot(code.flatten(), self.k).mean(0)
+        avg_probs = F.one_hot(code.flatten(), self.k).float().mean(0)
         perplexity = (-avg_probs*(avg_probs+1e-10).log()).sum().exp()
         return VQPseudoGrad.apply(z, zq), loss, code, perplexity
 
@@ -166,7 +166,7 @@ class VectorQuantizerEMA(nn.Module):
 
             self.embedding = upd_ema_cluster_sum / upd_ema_cluster_size[..., None]
 
-        avg_probs = code_oh.mean(0)
+        avg_probs = code_oh.float().mean(0)
         perplexity = (-avg_probs*(avg_probs+1e-10).log()).sum().exp()
         return VQPseudoGrad.apply(z, zq), loss, code, perplexity
 
