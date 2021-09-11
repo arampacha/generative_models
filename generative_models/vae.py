@@ -128,6 +128,7 @@ class VectorQuantizerEMA(nn.Module):
         self.gamma, self.epsilon = gamma, epsilon
         self.k = k
         self.register_buffer("embedding", (torch.empty(k, d)))
+        # self.embedding = nn.Parameter(torch.empty(k, d))
         nn.init.uniform_(self.embedding, -1/k, 1/k)
         self.ema_cluster_size = EMA((k, ), gamma=gamma)
         self.ema_cluster_sum = EMA(self.embedding.size(), gamma=gamma)
@@ -147,7 +148,7 @@ class VectorQuantizerEMA(nn.Module):
                     +(e*e).sum(-1, keepdim=True).t())
         code = distances.argmin(-1)
         code_oh = F.one_hot(code, self.k)
-        zq = F.embedding(code, e)
+        zq = F.embedding(code, e).clone().requires_grad_()
         if nd == 2:
             zq = zq.view(b,h,w,c).permute(0,3,1,2).contiguous()
 
@@ -190,8 +191,8 @@ class VQVAE(nn.Module):
 
     @torch.no_grad()
     def encode(self, x):
-        ze = self.ecoder(x)
-        _, _, code = self.quantize(ze)
+        ze = self.encoder(x)
+        code = self.quantize(ze)[2]
         return code
 
     @torch.no_grad()
